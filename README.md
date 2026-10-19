@@ -1,5 +1,7 @@
 # Gift of the Givers Website
 
+[![.NET build](https://github.com/OlugaNels/gift-of-the-givers/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/OlugaNels/gift-of-the-givers/actions/workflows/dotnet-build.yml)
+
 ASP.NET Core MVC web application (.NET 8) for managing donations, relief projects and volunteers, with employee and volunteer accounts.
 
 Module: APPR6312.
