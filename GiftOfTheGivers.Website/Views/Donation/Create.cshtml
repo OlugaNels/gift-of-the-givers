@@ -1,0 +1,101 @@
+@model GiftOfTheGivers.Website.ViewModels.DonationViewModel
+
+@{
+    ViewData["Title"] = "Donate";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <h1 class="fw-bold mb-1">Make a Donation</h1>
+            <p class="text-muted mb-4">
+                Your contribution funds food, water, medical supplies and rescue teams.
+                You may give as a guest without creating an account.
+            </p>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col-sm-7 mb-3">
+                                <label asp-for="Amount" class="form-label fw-semibold"></label>
+                                <input asp-for="Amount" class="form-control form-control-lg" placeholder="0.00" />
+                                <span asp-validation-for="Amount" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-5 mb-3">
+                                <label asp-for="Currency" class="form-label fw-semibold"></label>
+                                <select asp-for="Currency" class="form-select form-select-lg">
+                                    <option value="ZAR">ZAR &mdash; Rand</option>
+                                    <option value="USD">USD &mdash; Dollar</option>
+                                    <option value="EUR">EUR &mdash; Euro</option>
+                                </select>
+                                <span asp-validation-for="Currency" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <fieldset class="border rounded p-3 mb-4">
+                            <legend class="float-none w-auto px-2 fs-6 fw-semibold text-muted">Donation options</legend>
+
+                            <div class="form-check mb-2">
+                                <input asp-for="IsRecurring" class="form-check-input" />
+                                <label asp-for="IsRecurring" class="form-check-label">
+                                    Make this a <strong>recurring</strong> monthly donation
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input asp-for="IsAnonymous" class="form-check-input" id="isAnonymous" />
+                                <label asp-for="IsAnonymous" class="form-check-label" for="isAnonymous">
+                                    Give <strong>anonymously</strong> as a guest
+                                </label>
+                                <div class="form-text">
+                                    If selected, your name and email will not be stored with the donation.
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div id="donorDetails">
+                            <h2 class="h6 fw-semibold text-muted text-uppercase mb-3">Your details</h2>
+                            <div class="mb-3">
+                                <label asp-for="DonorName" class="form-label"></label>
+                                <input asp-for="DonorName" class="form-control" />
+                            </div>
+                            <div class="mb-4">
+                                <label asp-for="DonorEmail" class="form-label"></label>
+                                <input asp-for="DonorEmail" class="form-control" />
+                                <div class="form-text">Your tax certificate will reference this address.</div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg w-100">Donate</button>
+
+                        <p class="text-muted small text-center mt-3 mb-0">
+                            Prototype: no payment is processed and donation values are symbolic.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Hide the donor detail fields when the donor elects to give anonymously.
+        (function () {
+            var toggle = document.getElementById('isAnonymous');
+            var details = document.getElementById('donorDetails');
+            if (!toggle || !details) return;
+
+            function sync() {
+                details.style.display = toggle.checked ? 'none' : '';
+            }
+
+            toggle.addEventListener('change', sync);
+            sync();
+        })();
+    </script>
+}

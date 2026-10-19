@@ -1,0 +1,18 @@
+@{
+    // Nested layout used by the scaffolded ASP.NET Identity pages. The main layout is
+    // deliberately full-bleed so that the home page hero can span the viewport, so this
+    // wrapper supplies the container that the Identity pages expect.
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await RenderSectionAsync("Scripts", required: false)
+}

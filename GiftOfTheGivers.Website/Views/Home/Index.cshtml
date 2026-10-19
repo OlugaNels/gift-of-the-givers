@@ -1,0 +1,152 @@
+@model IEnumerable<GiftOfTheGivers.Website.Models.ReliefProject>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Hero -->
+<section class="hero text-white">
+    <div class="container py-5">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-7">
+                <span class="badge bg-warning text-dark mb-3">Disaster Relief Platform</span>
+                <h1 class="display-5 fw-bold mb-3">Best among people are those who benefit mankind</h1>
+                <p class="lead mb-4">
+                    When disaster strikes, hours matter. This platform coordinates the donations,
+                    volunteers and relief projects that let the Gift of the Givers Foundation reach
+                    affected communities faster.
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a class="btn btn-warning btn-lg fw-semibold" asp-controller="Donation" asp-action="Create">Donate now</a>
+                    <a class="btn btn-outline-light btn-lg" asp-controller="Volunteer" asp-action="Create">Volunteer with us</a>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="bg-white text-dark rounded-3 shadow-sm p-4">
+                    <h2 class="h5 fw-bold mb-3">Our impact</h2>
+                    <div class="row text-center g-3">
+                        <div class="col-4">
+                            <div class="stat-value">@ViewBag.ProjectCount</div>
+                            <div class="stat-label">Relief projects</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="stat-value">@ViewBag.VolunteerCount</div>
+                            <div class="stat-label">Volunteers</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="stat-value">@ViewBag.DonationCount</div>
+                            <div class="stat-label">Donations</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How to help -->
+<section class="container py-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">How you can help</h2>
+        <p class="text-muted">Three ways to support communities in crisis.</p>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 card-title fw-bold">Give</h3>
+                    <p class="card-text text-muted">
+                        Make a one-time or recurring donation in ZAR, USD or EUR. A tax certificate
+                        is issued immediately, and you may give anonymously as a guest.
+                    </p>
+                    <a class="stretched-link text-decoration-none fw-semibold" asp-controller="Donation" asp-action="Create">Make a donation &rarr;</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 card-title fw-bold">Volunteer</h3>
+                    <p class="card-text text-muted">
+                        Register your skills and availability so that coordinators can deploy the
+                        right people to the right crisis without delay.
+                    </p>
+                    <a class="stretched-link text-decoration-none fw-semibold" asp-controller="Volunteer" asp-action="Create">Register your skills &rarr;</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 card-title fw-bold">Follow the work</h3>
+                    <p class="card-text text-muted">
+                        Track active relief operations and read the progress updates posted by
+                        Foundation staff from the field.
+                    </p>
+                    <a class="stretched-link text-decoration-none fw-semibold" asp-controller="ReliefProject" asp-action="Index">View relief projects &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Active relief projects -->
+@if (Model != null && Model.Any())
+{
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1">Active relief projects</h2>
+                    <p class="text-muted mb-0">Operations currently receiving donations and volunteers.</p>
+                </div>
+                <a class="btn btn-outline-success" asp-controller="ReliefProject" asp-action="Index">See all</a>
+            </div>
+            <div class="row g-4">
+                @foreach (var project in Model)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h6 fw-bold">@project.Name</h3>
+                                <p class="card-text text-muted small">@project.Description</p>
+                                @{
+                                    var pct = project.GoalAmount > 0
+                                        ? (int)Math.Min(100, (project.RaisedAmount / project.GoalAmount) * 100)
+                                        : 0;
+                                }
+                                <div class="progress mb-2" role="progressbar" aria-label="Funding progress"
+                                     aria-valuenow="@pct" aria-valuemin="0" aria-valuemax="100" style="height: 8px;">
+                                    <div class="progress-bar bg-success" style="width: @pct%"></div>
+                                </div>
+                                <div class="d-flex justify-content-between small text-muted">
+                                    <span>R @project.RaisedAmount.ToString("N2") raised</span>
+                                    <span>of R @project.GoalAmount.ToString("N2")</span>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-0 pb-3">
+                                <a class="text-decoration-none fw-semibold" asp-controller="ReliefProject"
+                                   asp-action="Details" asp-route-id="@project.Id">Read updates &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- Call to action -->
+<section class="container py-5">
+    <div class="rounded-3 p-4 p-md-5 text-center bg-success-subtle">
+        <h2 class="fw-bold mb-2">Every contribution reaches a community</h2>
+        <p class="text-muted mb-4">
+            Donations fund food, water, medical supplies and search-and-rescue teams.
+            Volunteers deliver them.
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <a class="btn btn-success btn-lg" asp-controller="Donation" asp-action="Create">Donate</a>
+            <a class="btn btn-outline-success btn-lg" asp-controller="Volunteer" asp-action="Create">Volunteer</a>
+        </div>
+    </div>
+</section>

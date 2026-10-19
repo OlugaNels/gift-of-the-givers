@@ -1,0 +1,67 @@
+@{
+    ViewData["Title"] = "Contact";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <h1 class="fw-bold mb-4">Contact Us</h1>
+            <p class="lead text-muted mb-5">
+                For media enquiries, partnership proposals or questions about an existing
+                donation, please use the details below.
+            </p>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h2 class="h6 fw-bold text-uppercase text-muted">General enquiries</h2>
+                            <p class="mb-1"><strong>Email:</strong> info@giftofthegivers.org</p>
+                            <p class="mb-0"><strong>Telephone:</strong> +27 11 123 4567</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h2 class="h6 fw-bold text-uppercase text-muted">Emergency operations</h2>
+                            <p class="mb-1"><strong>24-hour line:</strong> 0800 786 786</p>
+                            <p class="mb-0 text-muted small">
+                                For active disaster response and rescue coordination.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h2 class="h6 fw-bold text-uppercase text-muted">Head office</h2>
+                            <p class="mb-0">
+                                Gift of the Givers Foundation<br />
+                                Pietermaritzburg<br />
+                                KwaZulu-Natal, South Africa
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h2 class="h6 fw-bold text-uppercase text-muted">Get involved</h2>
+                            <p class="mb-2 text-muted small">
+                                Ready to help? Register your skills or make a contribution.
+                            </p>
+                            <a class="btn btn-sm btn-success" asp-controller="Volunteer" asp-action="Create">Volunteer</a>
+                            <a class="btn btn-sm btn-outline-success" asp-controller="Donation" asp-action="Create">Donate</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-secondary mt-5 small mb-0">
+                <strong>Prototype notice.</strong> Contact details shown here are illustrative and
+                are included to demonstrate the page layout for the APPR6312 Portfolio of Evidence.
+            </div>
+        </div>
+    </div>
+</div>

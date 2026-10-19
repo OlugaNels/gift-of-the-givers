@@ -1,0 +1,47 @@
+@model GiftOfTheGivers.Website.Models.Volunteer
+
+@{
+    ViewData["Title"] = "Volunteer Registered";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5 text-center">
+                    <div class="display-6 mb-2">&#10003;</div>
+                    <h1 class="fw-bold mb-2">Thank you, @Model.FirstName!</h1>
+                    <p class="lead text-muted mb-4">
+                        Your volunteer registration has been received. A coordinator will be in
+                        touch when a deployment matches your skills.
+                    </p>
+
+                    <ul class="list-group list-group-flush text-start mb-4">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Name</span>
+                            <span class="fw-semibold">@Model.FirstName @Model.LastName</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Email</span><span class="fw-semibold">@Model.Email</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Skills</span><span class="fw-semibold">@Model.Skills</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Availability</span><span class="fw-semibold">@Model.Availability</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Registered</span>
+                            <span class="fw-semibold">@Model.JoinedDate.ToString("dd MMMM yyyy")</span>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a class="btn btn-outline-success" asp-controller="ReliefProject" asp-action="Index">View relief projects</a>
+                        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Return home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
