@@ -1,0 +1,77 @@
+@model GiftOfTheGivers.Website.ViewModels.VolunteerViewModel
+
+@{
+    ViewData["Title"] = "Volunteer";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <h1 class="fw-bold mb-1">Volunteer With Us</h1>
+            <p class="text-muted mb-4">
+                Tell us what you can do and when you are available, so coordinators can deploy
+                the right people to the right crisis without delay.
+            </p>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <h2 class="h6 fw-semibold text-muted text-uppercase mb-3">Your details</h2>
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label asp-for="FirstName" class="form-label"></label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label asp-for="LastName" class="form-label"></label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6 mb-4">
+                                <label asp-for="Phone" class="form-label"></label>
+                                <input asp-for="Phone" class="form-control" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <h2 class="h6 fw-semibold text-muted text-uppercase mb-3">How you can help</h2>
+                        <div class="mb-3">
+                            <label asp-for="Skills" class="form-label"></label>
+                            <input asp-for="Skills" class="form-control" placeholder="e.g. First Aid, Driving, Cooking" />
+                            <span asp-validation-for="Skills" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Availability" class="form-label"></label>
+                            <input asp-for="Availability" class="form-control" placeholder="e.g. Weekends, Evenings, On-call" />
+                            <span asp-validation-for="Availability" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Notes" class="form-label"></label>
+                            <textarea asp-for="Notes" class="form-control" rows="3"
+                                      placeholder="Anything else we should know — certifications, languages, equipment."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg w-100">Register as a volunteer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

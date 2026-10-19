@@ -1,0 +1,80 @@
+@model IEnumerable<GiftOfTheGivers.Website.Models.ReliefProject>
+
+@{
+    ViewData["Title"] = "Relief Projects";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+        <div>
+            <h1 class="fw-bold mb-1">Relief Projects</h1>
+            <p class="text-muted mb-0">Operations run by the Gift of the Givers Foundation.</p>
+        </div>
+        @if (User.IsInRole("Employee"))
+        {
+            <a class="btn btn-success" asp-action="Create">New project</a>
+        }
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-secondary">
+            No relief projects have been captured yet.
+            @if (User.IsInRole("Employee"))
+            {
+                <a asp-action="Create">Create the first one.</a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var project in Model)
+            {
+                var badge = project.Status switch
+                {
+                    "Active" => "bg-success",
+                    "Completed" => "bg-secondary",
+                    _ => "bg-warning text-dark"
+                };
+                var pct = project.GoalAmount > 0
+                    ? (int)Math.Min(100, (project.RaisedAmount / project.GoalAmount) * 100)
+                    : 0;
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge @badge">@project.Status</span>
+                                <small class="text-muted">@project.Location</small>
+                            </div>
+                            <h2 class="h6 fw-bold">@project.Name</h2>
+                            <p class="card-text text-muted small">@project.Description</p>
+
+                            <div class="progress mb-2" role="progressbar" aria-label="Funding progress"
+                                 aria-valuenow="@pct" aria-valuemin="0" aria-valuemax="100" style="height: 8px;">
+                                <div class="progress-bar bg-success" style="width: @pct%"></div>
+                            </div>
+                            <div class="d-flex justify-content-between small text-muted">
+                                <span>R @project.RaisedAmount.ToString("N2")</span>
+                                <span>of R @project.GoalAmount.ToString("N2")</span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 pb-3 d-flex gap-2">
+                            <a class="btn btn-sm btn-outline-success" asp-action="Details" asp-route-id="@project.Id">View updates</a>
+                            @if (User.IsInRole("Employee"))
+                            {
+                                <a class="btn btn-sm btn-success" asp-action="PostUpdate" asp-route-id="@project.Id">Post update</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

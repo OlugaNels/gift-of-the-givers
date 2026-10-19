@@ -1,0 +1,174 @@
+@using GiftOfTheGivers.Website.Models
+@{
+    ViewData["Title"] = "Employee Dashboard";
+    var projects = ViewBag.Projects as List<ReliefProject> ?? new List<ReliefProject>();
+    var volunteers = ViewBag.Volunteers as List<Volunteer> ?? new List<Volunteer>();
+    var recentUpdates = ViewBag.RecentUpdates as List<ProjectUpdate> ?? new List<ProjectUpdate>();
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+        <div>
+            <h1 class="fw-bold mb-1">Employee Dashboard</h1>
+            <p class="text-muted mb-0">Signed in as @User.Identity?.Name</p>
+        </div>
+        <a class="btn btn-success" asp-controller="ReliefProject" asp-action="Create">New relief project</a>
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+
+    <!-- Summary statistics -->
+    <div class="row g-3 mb-5">
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-label">Relief projects</div>
+                    <div class="stat-value">@ViewBag.ProjectCount</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-label">Active projects</div>
+                    <div class="stat-value">@ViewBag.ActiveProjectCount</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-label">Volunteers</div>
+                    <div class="stat-value">@ViewBag.VolunteerCount</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="stat-label">Donations</div>
+                    <div class="stat-value">@ViewBag.DonationCount</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Relief projects -->
+    <h2 class="h4 fw-bold mb-3">Relief projects</h2>
+    @if (!projects.Any())
+    {
+        <div class="alert alert-secondary">
+            No relief projects yet.
+            <a asp-controller="ReliefProject" asp-action="Create">Create the first one.</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-5">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Project</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="text-end">Raised</th>
+                        <th scope="col" class="text-end">Goal</th>
+                        <th scope="col" class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in projects)
+                    {
+                        var badge = p.Status switch
+                        {
+                            "Active" => "bg-success",
+                            "Completed" => "bg-secondary",
+                            _ => "bg-warning text-dark"
+                        };
+                        <tr>
+                            <td>
+                                <a class="fw-semibold text-decoration-none" asp-controller="ReliefProject"
+                                   asp-action="Details" asp-route-id="@p.Id">@p.Name</a>
+                            </td>
+                            <td class="text-muted">@p.Location</td>
+                            <td><span class="badge @badge">@p.Status</span></td>
+                            <td class="text-end">R @p.RaisedAmount.ToString("N2")</td>
+                            <td class="text-end text-muted">R @p.GoalAmount.ToString("N2")</td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-success" asp-controller="ReliefProject"
+                                   asp-action="PostUpdate" asp-route-id="@p.Id">Post update</a>
+                                <a class="btn btn-sm btn-outline-secondary" asp-controller="ReliefProject"
+                                   asp-action="Edit" asp-route-id="@p.Id">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <!-- Recent updates -->
+    <h2 class="h4 fw-bold mb-3">Recent progress updates</h2>
+    @if (!recentUpdates.Any())
+    {
+        <div class="alert alert-secondary">No progress updates have been posted yet.</div>
+    }
+    else
+    {
+        <div class="list-group mb-5 shadow-sm">
+            @foreach (var u in recentUpdates)
+            {
+                <a class="list-group-item list-group-item-action" asp-controller="ReliefProject"
+                   asp-action="Details" asp-route-id="@u.ReliefProjectId">
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-semibold">@u.Title</span>
+                        <small class="text-muted">@u.PostedAt.ToString("dd MMM yyyy HH:mm")</small>
+                    </div>
+                    <small class="text-muted">
+                        @(u.ReliefProject?.Name ?? "Project") &middot; posted by @u.PostedBy
+                    </small>
+                </a>
+            }
+        </div>
+    }
+
+    <!-- Volunteer sign-ups -->
+    <h2 class="h4 fw-bold mb-3">Volunteer sign-ups</h2>
+    @if (!volunteers.Any())
+    {
+        <div class="alert alert-secondary">No volunteers have registered yet.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Skills</th>
+                        <th scope="col">Availability</th>
+                        <th scope="col">Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var v in volunteers)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@v.FirstName @v.LastName</td>
+                            <td>@v.Email</td>
+                            <td class="text-muted">@v.Phone</td>
+                            <td>@v.Skills</td>
+                            <td>@v.Availability</td>
+                            <td class="text-muted">@v.JoinedDate.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

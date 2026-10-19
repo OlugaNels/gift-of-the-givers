@@ -1,0 +1,95 @@
+@model GiftOfTheGivers.Website.Models.Donation
+
+@{
+    ViewData["Title"] = "Tax Certificate";
+    var certificateNo = $"GG-{Model.DonationDate:yyyy}-{Model.Id:D6}";
+    var donorName = Model.IsAnonymous ? "Anonymous donor" : (Model.DonorName ?? "Not supplied");
+}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 no-print">
+        <a class="btn btn-outline-secondary btn-sm" asp-action="Confirmation" asp-route-id="@Model.Id">&larr; Back</a>
+        <button class="btn btn-success" onclick="window.print();">Download / print certificate</button>
+    </div>
+
+    <div class="certificate shadow-sm">
+        <div class="d-flex justify-content-between align-items-start">
+            <img src="~/img/logo.svg" alt="Gift of the Givers" height="52" />
+            <div class="text-end small text-muted">
+                <div><strong>Certificate no.</strong> @certificateNo</div>
+                <div><strong>Issued</strong> @DateTime.Now.ToString("dd MMMM yyyy")</div>
+            </div>
+        </div>
+
+        <hr class="certificate-rule" />
+
+        <h1 class="h4 fw-bold text-center mb-1">Tax Deduction Certificate</h1>
+        <p class="text-center text-muted small mb-0">
+            Issued in terms of Section 18A of the Income Tax Act, No. 58 of 1962
+        </p>
+
+        <hr class="certificate-rule" />
+
+        <p class="mb-4">
+            This is to certify that the Gift of the Givers Foundation, a registered Public Benefit
+            Organisation, gratefully acknowledges receipt of the following donation:
+        </p>
+
+        <dl class="row mb-0">
+            <div class="col-sm-6">
+                <dt>Donor</dt>
+                <dd>@donorName</dd>
+            </div>
+            <div class="col-sm-6">
+                <dt>Donation reference</dt>
+                <dd>@certificateNo</dd>
+            </div>
+            <div class="col-sm-6">
+                <dt>Amount received</dt>
+                <dd class="fw-bold">@Model.Currency @Model.Amount.ToString("N2")</dd>
+            </div>
+            <div class="col-sm-6">
+                <dt>Date received</dt>
+                <dd>@Model.DonationDate.ToString("dd MMMM yyyy")</dd>
+            </div>
+            <div class="col-sm-6">
+                <dt>Donation type</dt>
+                <dd>@(Model.IsRecurring ? "Recurring donation" : "One-time donation")</dd>
+            </div>
+            <div class="col-sm-6">
+                <dt>Nature of donation</dt>
+                <dd>Cash</dd>
+            </div>
+        </dl>
+
+        <hr class="certificate-rule" />
+
+        <p class="small text-muted mb-4">
+            The donation described above was received for the sole purpose of funding the public
+            benefit activities of the Gift of the Givers Foundation, and no consideration was
+            given to the donor in respect of it.
+        </p>
+
+        <div class="row mt-5">
+            <div class="col-6">
+                <div class="border-top pt-2 small">
+                    <strong>Authorised signatory</strong><br />
+                    <span class="text-muted">Gift of the Givers Foundation</span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="border-top pt-2 small">
+                    <strong>PBO registration number</strong><br />
+                    <span class="text-muted">PBO 000-000-000 (placeholder)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-warning small mt-4 mb-0">
+            <strong>Prototype document.</strong> This certificate is a placeholder generated for
+            the APPR6312 Portfolio of Evidence. No payment has been processed and this document
+            has no legal or tax standing.
+        </div>
+    </div>
+</div>

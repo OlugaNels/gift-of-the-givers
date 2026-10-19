@@ -1,0 +1,58 @@
+@model GiftOfTheGivers.Website.ViewModels.ProjectUpdateViewModel
+
+@{
+    ViewData["Title"] = "Post Project Update";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb small">
+                    <li class="breadcrumb-item"><a class="text-decoration-none" asp-action="Index">Relief Projects</a></li>
+                    <li class="breadcrumb-item">
+                        <a class="text-decoration-none" asp-action="Details" asp-route-id="@Model.ReliefProjectId">@Model.ProjectName</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Post update</li>
+                </ol>
+            </nav>
+
+            <h1 class="fw-bold mb-1">Post a progress update</h1>
+            <p class="text-muted mb-4">
+                Publishing to <strong>@Model.ProjectName</strong>. Updates are visible to donors
+                and volunteers on the project page.
+            </p>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form asp-action="PostUpdate" asp-route-id="@Model.ReliefProjectId" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="ReliefProjectId" />
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label"></label>
+                            <input asp-for="Title" class="form-control" placeholder="e.g. Water purification units deployed to Ladysmith" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Body" class="form-label"></label>
+                            <textarea asp-for="Body" class="form-control" rows="8"
+                                      placeholder="Describe what has been delivered, what is still needed, and any changes to the operation."></textarea>
+                            <span asp-validation-for="Body" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">Publish update</button>
+                            <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.ReliefProjectId">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

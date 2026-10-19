@@ -1,0 +1,64 @@
+@model GiftOfTheGivers.Website.Models.Donation
+
+@{
+    ViewData["Title"] = "Donation Confirmed";
+    var certificateNo = $"GG-{Model.DonationDate:yyyy}-{Model.Id:D6}";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5 text-center">
+                    <div class="display-6 mb-2">&#10003;</div>
+                    <h1 class="fw-bold mb-2">Thank you@(Model.IsAnonymous ? "" : ", " + Model.DonorName)!</h1>
+                    <p class="lead text-muted mb-4">
+                        Your donation of <strong>@Model.Currency @Model.Amount.ToString("N2")</strong> has been received.
+                    </p>
+
+                    <ul class="list-group list-group-flush text-start mb-4">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Reference</span><span class="fw-semibold">@certificateNo</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Amount</span><span class="fw-semibold">@Model.Currency @Model.Amount.ToString("N2")</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Type</span>
+                            <span class="fw-semibold">@(Model.IsRecurring ? "Recurring donation" : "One-time donation")</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Date</span><span class="fw-semibold">@Model.DonationDate.ToString("dd MMMM yyyy")</span>
+                        </li>
+                        @if (Model.IsAnonymous)
+                        {
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span class="text-muted">Donor</span><span class="fw-semibold">Anonymous</span>
+                            </li>
+                        }
+                    </ul>
+
+                    @if (Model.IsRecurring)
+                    {
+                        <div class="alert alert-info small text-start">
+                            This gift has been set up to repeat. You may cancel a recurring donation
+                            at any time by contacting the Foundation.
+                        </div>
+                    }
+
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a class="btn btn-success btn-lg" asp-action="Certificate" asp-route-id="@Model.Id">
+                            View tax certificate
+                        </a>
+                        <a class="btn btn-outline-secondary btn-lg" asp-controller="Home" asp-action="Index">Return home</a>
+                    </div>
+
+                    <p class="text-muted small mt-4 mb-0">
+                        A Section 18A tax certificate has been generated for this donation and can be
+                        printed or saved as a PDF.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
