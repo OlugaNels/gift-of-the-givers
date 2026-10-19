@@ -4,6 +4,12 @@ ASP.NET Core MVC web application (.NET 8) for managing donations, relief project
 
 Module: APPR6312.
 
+## Screenshots
+
+| Home | Relief projects | Make a donation |
+|---|---|---|
+| <img src="docs/screenshots/homepage.png" width="300" alt="Home page"> | <img src="docs/screenshots/relief-projects.png" width="300" alt="Relief projects with progress bars"> | <img src="docs/screenshots/donation-form.png" width="300" alt="Donation form"> |
+
 ## Features
 
 - Donations, relief projects, project updates and volunteer sign-up (controllers, view models and Razor views for each)
